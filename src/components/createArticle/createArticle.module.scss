@@ -1,0 +1,105 @@
+.create {
+    margin: 20px auto;
+    width: 938px;
+    height: auto;
+    background-color: #FFF;
+    padding: 48px 32px;
+    position: relative;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+
+    &__title {
+        color: #000;
+        font-size: 20px;
+        line-height: 28px;
+        display: flex;
+        justify-content: center;
+        font-weight: 500;
+    }
+}
+
+.label {
+    display: block;
+    margin-top: 21px;
+
+    &__text {
+        display: flex;
+        margin-top: 30px;
+    }
+}
+
+.input {
+    display: block;
+    background-color: #FFF;
+    width: 874px;
+    height: 40px;
+    margin-top: 2px;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+}
+
+.input__text {
+    display: flex;
+    background-color: #FFF;
+    width: 874px;
+    height: 168px;
+    margin-top: 2px;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    vertical-align: top;
+}
+
+.input__tags {
+    display: flex;
+    background-color: #FFF;
+    width: 300px;
+    height: 40px;
+    margin-top: 2px;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    vertical-align: top;
+    margin-right: 17px;
+}
+
+.input__list {
+    display: flex;
+    margin-top: 5px;
+}
+
+.error {
+    color: #F5222D;
+    margin-top: 2px;
+}
+
+.input__button_delete {
+    color: #F5222D;
+    padding: 8px 36px;
+    border: 1px solid #F5222D;
+    border-radius: 6px;
+}
+
+.input__button_addTag {
+    color: #1890FF;
+    padding: 10px 36px;
+    border: 1px solid #1890FF;
+    border-radius: 6px;
+    bottom: 109px;
+    position: absolute;
+    left: 481px;
+}
+
+form .submit {
+    width: 319px;
+    height: 40px;
+    color: #FFF;
+    background-color: #1890FF;
+    margin-top: 21px;
+}
+
+.alert {
+    width: fit-content;
+    margin: 5px auto;
+}

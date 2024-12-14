@@ -1,0 +1,19 @@
+.articles {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    &__list {
+        margin: 0 auto;
+    }
+}
+
+.pagination {
+    margin: 20px auto;
+}
+
+.spin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

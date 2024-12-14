@@ -1,0 +1,81 @@
+{
+    "env": {
+      "browser": true,
+      "es2021": true
+    },
+    "ignorePatterns": ["node_modules", "dist", "build"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "airbnb",
+      "eslint-config-prettier"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "es6": true,
+      "sourceType": "module",
+      "parser": "babel-eslint"
+    },
+    "plugins": ["react"],
+    "rules": {
+      "indent": ["error", 4],
+      "prettier/prettier": "off",
+      "linebreak-style": [0, "unix"],
+      "quotes": ["error", "single"],
+      "semi": 0,
+      "no-plusplus": "off",
+      "react/state-in-constructor": "off",
+      "class-methods-use-this": "off",
+      "consistent-return": "off",
+      "react/sort-comp": "off",
+      "react/destructuring-assignment": "off",
+      "max-len": ["error", 120],
+      "eslint-disable-next-line no-param-reassign": "off",
+      "no-param-reassign": "off",
+      "object-curly-newline": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/prefer-stateless-function": "off",
+      "jsx-a11y/label-has-associated-control": "off",
+      "eol-last": "off",
+      "react/button-has-type": "off",
+      "jsx-a11y/control-has-associated-label": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "import/no-named-as-default": 0,
+      "import/no-named-as-default-member": 0,
+      "import/namespace": 0,
+      "import/default": 0,
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": 0,
+      "import/no-unresolved": [2, { "caseSensitive": false }],
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "import/order": [
+        2,
+        {
+          "groups": [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index"
+          ],
+          "newlines-between": "always"
+        }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".jsx", ".ts", ".tsx"],
+          "moduleDirectory": ["node_modules", "src/"]
+        }
+      },
+      "react": { 
+        "version": "detect" 
+      }
+    }
+  }

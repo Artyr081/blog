@@ -1,0 +1,49 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+
+    &__authorization {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__title {
+        font-size: 18px;
+        line-height: 28px;
+        margin: 22px 0 15px 22px;
+    }
+
+    &__name {
+        margin-right: 8px;
+    }
+
+    &__button {
+        font-size: 18px;
+        line-height: 28px;
+        margin: 22px;
+
+        &_green {
+            color: #52C41A;
+            padding: 10px;
+            border: 1px solid #52C41A;
+            margin-right: 22px;
+        }
+
+        &_profile {
+            font-size: 16px;
+            padding: 6px 18px;
+            border: 1px solid #000;
+            margin-left: 27px;
+            margin-right: 22px;
+        }
+
+        &_greenProfile {
+            color: #52C41A;
+            padding: 6px 10px;
+            border: 1px solid #52C41A;
+            margin-right: 37px;
+        }
+    }
+}

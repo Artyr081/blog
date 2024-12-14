@@ -1,0 +1,58 @@
+.edit {
+    display: flex;
+    flex-direction: column;
+    margin: 60px auto;
+    padding: 48px 32px;
+    width: 384px;
+    height: auto;
+    background-color: #FFF;
+    border: 1px solid #D9D9D9;
+    border-radius: 6px;
+}
+
+.label {
+    display: block;
+    margin-top: 21px;
+
+    &__text {
+        display: flex;
+        margin-top: 30px;
+    }
+}
+
+.title {
+    color: #262626;
+    font-size: 20px;
+    line-height: 28px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.input {
+    background-color: #FFF;
+    width: 320px;
+    min-height: 40px;
+    margin-top: 2px;
+    padding: 8px 12px;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+}
+
+.error {
+    color: red;
+    margin-top: 2px;
+}
+
+form .save {
+    width: 319px;
+    height: 40px;
+    color: #FFF;
+    background-color: #1890FF;
+    margin-top: 21px;
+}
+
+.alert {
+    width: fit-content;
+    margin: 5px auto;
+}
