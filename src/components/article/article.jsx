@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
-import { Tag, Spin, Alert, Avatar} from 'antd';
+import { Tag, Spin, Alert, Avatar, Popconfirm } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { format } from 'date-fns';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import style from './article.module.scss';
 export default function Article() {
     const [errorApi, setErrorApi] = useState('');
     const [buttonDiasbled, setButtonDisabled] = useState(false)
+    const [visible, setVisible] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { slug } = useParams();
@@ -117,8 +118,13 @@ export default function Article() {
                 <img className={style.article__img} src={favorite ? likeRed : like}  alt='лайк'/>
                 <span>{favoriteCount}</span>
             </button>
-            {isAuth && isAuthName === data.article.author.username && <button className={style.author__delete} 
-                onClick={hundleDeleteArticle} disabled={buttonDiasbled}>Delete</button>}
+            {isAuth && isAuthName === data.article.author.username && <Popconfirm title='Hello world' 
+                open={visible}
+                onConfirm={hundleDeleteArticle}
+                onCancel={() => setVisible(false)}>
+                <button className={style.author__delete} type='primary'
+                    onClick={() => setVisible(true)} disabled={buttonDiasbled}>Delete</button>
+            </Popconfirm>}
             {isAuth && isAuthName === data.article.author.username && <button className={style.author__edit} 
                 onClick={hundleEditArticle} disabled={buttonDiasbled}>Edit</button>}
             <div className={style.author}>
