@@ -20,6 +20,7 @@ const articlesApi = createApi({
                 if (offset >= 2) return `/articles?limit=5&offset=${offset * 5 - 5}`
                 return `/articles?limit=5&offset=${offset}`
             },
+            keepUnusedDataFor: 0,
         }),
         getAnArticleApi: build.query({
             query: (slug) => `/articles/${slug}`

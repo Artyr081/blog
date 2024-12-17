@@ -1,17 +1,19 @@
 import React, { useState} from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Alert } from 'antd';
+import { useSelector } from 'react-redux';
 
+import { articleInfo } from '../../redux/selector';
 import { useCreateNewArticleMutation } from '../../redux/createArticleApi';
 
 import style from './editArticle.module.scss';
 
 export default function EditArticle() {
     const [errorApi, setErrorApi] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const navigate = useNavigate();
-    const location = useLocation();
-    const { article } = location.state;
+    const article = useSelector(articleInfo);
     const [field, setField] = useState(article.tagList.map((tag, index) => ({ id: index + 1, tag })));
     const [ createNewArticle, { isSuccess: isRegistrationSuccess,} ] = useCreateNewArticleMutation();
     const {
@@ -25,6 +27,7 @@ export default function EditArticle() {
             text: article.body,
         }
     });
+    console.log(article)
 
     if (isRegistrationSuccess) {
         navigate('/')
@@ -33,13 +36,16 @@ export default function EditArticle() {
     const onSubmit = async (data) => {
         const tags = field.map(item => item.tag);
         try {
+            setButtonDisabled(true)
             await createNewArticle({
                 title: data.title,
                 description: data.shortDescription,
                 body: data.text,
                 tagList: tags,
             });
+            setButtonDisabled(false)
         }catch(err) {
+            setButtonDisabled(false)
             setErrorApi(setErrorApi('Произошла ошибка, попробуйте позже'))
         }
     }
@@ -132,7 +138,7 @@ export default function EditArticle() {
                         <p className={style.error}>{errors?.tags?.message}</p>
                     )}
                 </label>
-                <input className={style.submit} type='submit' value='Send' />
+                <input className={style.submit} type='submit' value='Send' disabled={buttonDiasbled} />
             </form>
             <button className={style.input__button_addTag} onClick={createFiled}>Add tag</button>
         </section>

@@ -11,6 +11,7 @@ import style from './articlesItem.module.scss';
 
 export default function ArticlesItem({item}) {
     const [errorApi, setErrorApi] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const isAuth = localStorage.getItem('token');
     const [ disliceArticle] = useDisliceArticleMutation();
     const [ likeArticle] = useLikeArticleMutation();
@@ -20,6 +21,7 @@ export default function ArticlesItem({item}) {
     const hundleClickLike = async () => {
         if (isAuth) {
             try {
+                setButtonDisabled(true)
                 if (!favorite) {
                     const response = await likeArticle(item.slug).unwrap();
                     setFavorite(true);
@@ -29,8 +31,10 @@ export default function ArticlesItem({item}) {
                     setFavorite(false);
                     setFavoritesCount(response.article.favoritesCount);
                 }
+                setButtonDisabled(false)
             } catch (err) {
                 setErrorApi('Произошла ошибка, попробуйте добавить в избранное позже')
+                setButtonDisabled(false)
             }
         } else {
             setErrorApi('К сожалению, только авторизованные пользователи могут оценивать посты')
@@ -38,12 +42,12 @@ export default function ArticlesItem({item}) {
     }
 
     return (
-        <li className={style.articlesItem}>
+        <li className={style.articlesItem} key={item.slug}>
             {errorApi && <Alert message={errorApi} type='error' className={style.alert} closable />}
             <Link to={`/articles/${item.slug}`}>
                 <h2 className={style.articlesItem__title}>{item.title}</h2>
             </Link>
-            <button className={style.articlesItem__liked} onClick={hundleClickLike}>
+            <button className={style.articlesItem__liked} onClick={hundleClickLike} disabled={buttonDiasbled}>
                 <img className={style.articlesItem__img} src={favorite ? likeRed : like}  alt='лайк'/>
                 <span>{favoriteCount}</span>
             </button>

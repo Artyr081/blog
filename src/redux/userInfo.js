@@ -44,7 +44,7 @@ export const userInfo = createSlice({
             localStorage.setItem('emailaddres', action.payload.user.email)
         
             state.password = action.payload.user.password;
-            state.image = action.payload.user.image;
+            state.image = action.payload.user.avatarImage;
             state.authorization = true;
         }
     },

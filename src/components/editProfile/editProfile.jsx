@@ -11,12 +11,13 @@ import style from './editProfile.module.scss';
 
 export default function EditProfile() {
     const[errorApi, setErrorApi] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const userNames = localStorage.getItem('username');
     const useEmails = localStorage.getItem('emailaddres');
+    const userImage = localStorage.getItem('image')
     const [editProfileApi] = useEditProfileMutation();
-
     const {
         register,
         formState: { errors },
@@ -29,7 +30,8 @@ export default function EditProfile() {
     useEffect(() => {
         setValue('Username', userNames);
         setValue('EmailAddres', useEmails);
-    }, [userNames, useEmails, setValue]);
+        setValue('avatarImage', userImage)
+    }, [userNames, useEmails, userImage, setValue]);
 
     const onSubmit = async (data) => {
         const { EmailAddres, Password, Username, avatarImage} = data;
@@ -39,14 +41,18 @@ export default function EditProfile() {
             username: Username,
             avatarImage,
         }
+        localStorage.setItem('image', avatarImage)
         
         try {
-            const datas = await editProfileApi(obj).then(res => res.data);
+            setButtonDisabled(true)
+            const datas = await editProfileApi(obj).then(res => res.data)
             dispatch(setEditProfile(datas))
+            setButtonDisabled(false)
             navigate('/')
 
         }catch(err) {
             setErrorApi('Произошла ошибка, попробуйте позже')
+            setButtonDisabled(false)
         }
     }
 
@@ -106,11 +112,11 @@ export default function EditProfile() {
                 </label>
                 <label className={style.label}>
                     Avatar image (url):
-                    <input type='password' className={style.input} 
-                        placeholder="Repeat Password" {...register('avatarImage')} 
+                    <input  className={style.input} 
+                        placeholder={userImage} {...register('avatarImage')} 
                     />
                 </label>
-                <input className={style.save} type='submit' value='Save' />
+                <input className={style.save} type='submit' value='Save' disabled={buttonDiasbled} />
             </form>
         </section>
     )

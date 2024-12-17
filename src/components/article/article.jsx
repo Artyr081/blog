@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
-import { Tag, Spin, Alert } from 'antd';
+import { Tag, Spin, Alert, Avatar} from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import { format } from 'date-fns';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import { setArticleInfo } from '../../redux/articleInfo';
 import { useEditArticleMutation } from '../../redux/editArticleApi';
 import { useGetAnArticleApiQuery } from '../../redux/articlesApi';
 import { useDeleteArticleMutation } from '../../redux/deleteArticleApi';
@@ -13,11 +16,14 @@ import likeRed from '../../rest/like-red.svg';
 
 import style from './article.module.scss';
 
+
 export default function Article() {
     const [errorApi, setErrorApi] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { slug } = useParams();
-    const { data, error, isLoading } = useGetAnArticleApiQuery(slug);
+    const { data, error, isLoading } = useGetAnArticleApiQuery(slug, {refetchOnMountOrArgChange: true});
     const [favorite, setFavorite] = useState(false);
     const [favoriteCount, setFavoritesCount] = useState(1)
     const [ editArticle, { isSuccess: isRegistrationSuccess} ] = useEditArticleMutation();
@@ -34,7 +40,7 @@ export default function Article() {
     }, [data]);
 
     if (isRegistrationSuccess) {
-        navigate(`/articles/${slug}/edit`, { state: { article: data.article } });
+        navigate(`/articles/${slug}/edit`);
     }
 
     if (isRegistrationsuccess) {
@@ -52,17 +58,24 @@ export default function Article() {
                 },
                 slug
             }
-            await editArticle(obj).then((res) => res.data)
+            setButtonDisabled(true)
+            const result = await editArticle(obj).then((res) => res.data)
+            dispatch(setArticleInfo(result))
+            setButtonDisabled(false)
         }catch(err) {
             setErrorApi('Произошла ошибка, попробуйте позже')
+            setButtonDisabled(false)
         }
     }
 
     const hundleDeleteArticle = async () => {
         try{
+            setButtonDisabled(true)
             await deleteArticle(slug)
+            setButtonDisabled(false)
         }catch(err) {
             setErrorApi('Произошла ошибка при попытке удаления статьи, попробуйте позже')
+            setButtonDisabled(false)
             
         }
     }
@@ -70,6 +83,7 @@ export default function Article() {
     const hundleClickLike = async () => {
         if (isAuth) {
             try {
+                setButtonDisabled(true)
                 if (!favorite) {
                     const response = await likeArticle(slug).unwrap();
                     setFavorite(true);
@@ -79,11 +93,14 @@ export default function Article() {
                     setFavorite(false);
                     setFavoritesCount(response.article.favoritesCount);
                 }
+                setButtonDisabled(false)
             } catch (err) {
                 setErrorApi('Произошла ошибка, попробуйте добавить в избранное позже')
+                setButtonDisabled(false)
             }
         } else {
             setErrorApi('К сожалению, только авторизованные пользователи могут оценивать посты')
+            setButtonDisabled(false)
         }
     }
 
@@ -96,28 +113,28 @@ export default function Article() {
         <section className={style.article}>
             {errorApi && <Alert message={errorApi} type='error' className={style.alert} closable />}
             <h3 className={style.article__title}>{data.article.title}</h3>
-            <button className={style.article__liked} onClick={hundleClickLike}>
+            <button className={style.article__liked} onClick={hundleClickLike} disabled={buttonDiasbled}>
                 <img className={style.article__img} src={favorite ? likeRed : like}  alt='лайк'/>
                 <span>{favoriteCount}</span>
             </button>
             {isAuth && isAuthName === data.article.author.username && <button className={style.author__delete} 
-                onClick={hundleDeleteArticle}>Delete</button>}
+                onClick={hundleDeleteArticle} disabled={buttonDiasbled}>Delete</button>}
             {isAuth && isAuthName === data.article.author.username && <button className={style.author__edit} 
-                onClick={hundleEditArticle}>Edit</button>}
+                onClick={hundleEditArticle} disabled={buttonDiasbled}>Edit</button>}
             <div className={style.author}>
                 <span className={style.author__name}>{data.article.author.username}</span>
                 <span className={style.author__date}>
                     {format(new Date(`${data.article.createdAt}`), 'MMMM d, yyyy')}
                 </span>
-                <img className={style.author__img} src={data.article.author.image} alt='аватарка автора' />
+                {data.article.author.image ? 
+                    <img className={style.author__img} src={data.article.author.image} alt='аватарка автора' /> : 
+                    <Avatar className={style.author__img} shape="square" size={46} icon={<UserOutlined />} />}
             </div>
             <div className={style.author__tag}>{data.article.tagList.map((element) => <Tag>{element}</Tag>)}</div>
             <p className={style.author__text}>{data.article.description}</p>
-            <p className={style.author__text}>
-                <Markdown>
-                    {data.article.body}
-                </Markdown>
-            </p>
+            <Markdown className={style.author__text}>
+                {data.article.body}
+            </Markdown>
         </section>
     )
 }

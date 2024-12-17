@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import articlesApi from './articlesApi';
 import usersApi from './usersApi';
 import userInfo from './userInfo';
+import articleInfo from './articleInfo';
 import loginUserApi from './loginUserApi';
 import articleApi from './createArticleApi';
 import editArticleApi from './editArticleApi';
@@ -12,6 +13,7 @@ import favoriteArticleApi from './favoriteArticleApi';
 const store = configureStore({
     reducer: {
         userInfo,
+        articleInfo,
         [articlesApi.reducerPath]: articlesApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
         [loginUserApi.reducerPath]: loginUserApi.reducer,

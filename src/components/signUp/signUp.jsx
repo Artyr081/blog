@@ -12,6 +12,7 @@ export default function SignUp() {
     const [errorUsername, setErrorUserName] = useState('');
     const [errorEmail, setErrorEmail] = useState('');
     const [error, setError] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [createUser, { isSuccess: isRegistrationSuccess}] = useCreateUserMutation();
@@ -49,10 +50,13 @@ export default function SignUp() {
         }
         
         try {
+            setButtonDisabled(true)
             await createUser(obj).unwrap();
             dispatch(setRegisterUserInfo(data))
+            setButtonDisabled(false)
 
         }catch(err) {
+            setButtonDisabled(false)
             if(err.status === 422) {
                 if (err.data.errors.username) {
                     setErrorUserName('Данное имя уже занято, попробуйте ввести другое имя')
@@ -151,7 +155,7 @@ export default function SignUp() {
                 {errors?.checkbox?.message && (
                     <p className={style.error}>{errors?.checkbox?.message}</p>
                 )}
-                <input className={style.submit} type='submit' value='Create' disabled={!isValid} />
+                <input className={style.submit} type='submit' value='Create' disabled={!isValid && buttonDiasbled} />
             </form>
             <div className={style.sign__in}>
                 <p>Already have an account?<Link className={style.sign__inLink} to='/sign-in'>Sign In</Link>.</p>

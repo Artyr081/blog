@@ -9,9 +9,10 @@ import style from './createArticle.module.scss';
 
 export default function CreateArticle() {
     const [errorApi, setErrorApi] = useState('');
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const [field, setField] = useState([{id: 1, tag: ''}]);
     const navigate = useNavigate();
-    const [ createNewArticle, { isSuccess: isRegistrationSuccess,} ] = useCreateNewArticleMutation();
+    const [ createNewArticle, {data, isSuccess: isRegistrationSuccess,}] = useCreateNewArticleMutation();
     const {
         register,
         formState: { errors },
@@ -19,20 +20,24 @@ export default function CreateArticle() {
     } = useForm();
 
     if (isRegistrationSuccess) {
-        navigate('/')
+        console.log(data)
+        navigate(`/articles/${data.article.slug}`)
     }
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (datas) => {
         const tags = field.map(item => item.tag);
         try {
+            setButtonDisabled(true)
             await createNewArticle({
-                title: data.title,
-                description: data.shortDescription,
-                body: data.text,
+                title: datas.title,
+                description: datas.shortDescription,
+                body: datas.text,
                 tagList: tags,
             });
+            setButtonDisabled(false)
         }catch(err) {
             setErrorApi('Произошла ошибка при создание новой статьи, попробуйте позже')
+            setButtonDisabled(false)
         }
     }
 
@@ -114,7 +119,7 @@ export default function CreateArticle() {
                         <p className={style.error}>{errors?.tags?.message}</p>
                     )}
                 </label>
-                <input className={style.submit} type='submit' value='Send' />
+                <input className={style.submit} type='submit' value='Send' disabled={buttonDiasbled} />
             </form>
             <button className={style.input__button_addTag} onClick={createFiled}>Add tag</button>
         </section>

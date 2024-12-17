@@ -10,6 +10,7 @@ import style from './signIn.module.scss';
 
 export default function SignIn() {
     const [error, setError] = useState('')
+    const [buttonDiasbled, setButtonDisabled] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [loginUserApi, { isSuccess: isRegistrationSuccess,}] = useLoginUserMutation();
@@ -31,11 +32,14 @@ export default function SignIn() {
         }
         
         try {
+            setButtonDisabled(true)
             const datas = await loginUserApi(obj).then(res => res.data);
             dispatch(setLoginrUser(datas))
+            setButtonDisabled(false)
 
         }catch(err) {
             setError('Проверьте введенные данные и повторите попытку входа')
+            setButtonDisabled(false)
         }
     }
 
@@ -78,7 +82,7 @@ export default function SignIn() {
                         <p className={style.error}>{errors?.password?.message}</p>
                     )}
                 </label>
-                <input className={style.submit} type='submit' value='Login' />
+                <input className={style.submit} type='submit' value='Login' disabled={buttonDiasbled} />
             </form>
             <div className={style.sign__in}>
                 <p>Already have an account?<Link className={style.sign__inLink} to='/sign-up'>Sign Up</Link>.</p>
