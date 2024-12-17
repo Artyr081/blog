@@ -17,7 +17,7 @@ export default function Header() {
 
     useEffect(() => {
         setUserName(localStorage.getItem('username'))
-        if (localStorage.getItem('image').length > 10) {
+        if (localStorage.getItem('image')) {
             setUserImage(localStorage.getItem('image'))
         }
     }, [name, image])
