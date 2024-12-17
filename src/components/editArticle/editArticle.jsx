@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Alert } from 'antd';
@@ -14,7 +14,7 @@ export default function EditArticle() {
     const [buttonDiasbled, setButtonDisabled] = useState(false)
     const navigate = useNavigate();
     const article = useSelector(articleInfo);
-    const [field, setField] = useState(article.tagList.map((tag, index) => ({ id: index + 1, tag })));
+    const [field, setField] = useState([]);
     const [ createNewArticle, { isSuccess: isRegistrationSuccess,} ] = useCreateNewArticleMutation();
     const {
         register,
@@ -27,7 +27,12 @@ export default function EditArticle() {
             text: article.body,
         }
     });
-    console.log(article)
+    
+    useEffect(() => {
+        if(article && article.tagList) {
+            setField(article.tagList.map((tag, index) => ({ id: index + 1, tag })))
+        }
+    }, [article]);
 
     if (isRegistrationSuccess) {
         navigate('/')
