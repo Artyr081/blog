@@ -10,8 +10,9 @@ export default function Articles() {
     const [current, setCurrent] = useState(
         localStorage.getItem('currentPage') ? localStorage.getItem('currentPage') : 1
     );
-    const { data, isLoading, error } = useGetArticleApiQuery(current);
-    const  currentPage = (page) => {
+    const limit = 5;
+    const { data, isLoading, error } = useGetArticleApiQuery({limit, offset: (current - 1) * 5});
+    const currentPage = (page) => {
         setCurrent(page);
         localStorage.setItem('currentPage', page)
     }

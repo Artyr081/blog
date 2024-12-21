@@ -16,11 +16,8 @@ const articlesApi = createApi({
     tagTypes: ['Articles'],
     endpoints: (builder) => ({
         getArticleApi: builder.query({
-            query: (offset = null) => {
-                if (offset === 1) return `/articles?limit=5&offset=${offset}`
-                if (offset >= 2) return `/articles?limit=5&offset=${offset * 5 - 5}`
-                return `/articles?limit=5&offset=${offset}`
-            },
+            query: ({limit = 5, offset = 1}) =>
+                `/articles?limit=${limit}&offset=${offset}`,
             providesTags: ['Articles'],
         }),
         getAnArticleApi: builder.query({

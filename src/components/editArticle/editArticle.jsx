@@ -15,7 +15,7 @@ export default function EditArticle() {
     const navigate = useNavigate();
     const article = useSelector(articleInfo);
     const [field, setField] = useState([]);
-    const [ createNewArticle, { isSuccess: isRegistrationSuccess,} ] = useCreateNewArticleMutation();
+    const [ createNewArticle] = useCreateNewArticleMutation();
     const {
         register,
         formState: { errors },
@@ -34,20 +34,17 @@ export default function EditArticle() {
         }
     }, [article]);
 
-    if (isRegistrationSuccess) {
-        navigate('/')
-    }
-
     const onSubmit = async (data) => {
         const tags = field.map(item => item.tag);
         try {
             setButtonDisabled(true)
-            await createNewArticle({
+            const response = await createNewArticle({
                 title: data.title,
                 description: data.shortDescription,
                 body: data.text,
                 tagList: tags,
             });
+            navigate(`/articles/${response.data.article.slug}`)
             setButtonDisabled(false)
         }catch(err) {
             setButtonDisabled(false)

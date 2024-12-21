@@ -35,8 +35,11 @@ export default function Article() {
         if (data) {
             setFavorite(data.article.favorited);
             setFavoritesCount(data.article.favoritesCount);
+            if (isAuth !== data.article.author.username) {
+                navigate(`/articles/${slug}`);
+            }
         }
-    }, [data]);
+    }, [data, isAuth, slug]);
 
     if (isRegistrationSucces) {
         navigate(`/articles/${slug}/edit`);
