@@ -5,7 +5,7 @@ import { Tag, Alert } from 'antd';
 
 import like from '../../rest/like.svg';
 import likeRed from '../../rest/like-red.svg';
-import { useLikeArticleMutation, useDisliceArticleMutation } from '../../redux/favoriteArticleApi';
+import { useLikeArticleMutation, useDisliceArticleMutation } from '../../redux/articlesApi';
 
 import style from './articlesItem.module.scss';
 

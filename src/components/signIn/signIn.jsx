@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setLoginrUser } from '../../redux/userInfo';
-import { useLoginUserMutation } from '../../redux/loginUserApi';
+import { useLoginUserMutation } from '../../redux/usersApi';
 
 import style from './signIn.module.scss';
 

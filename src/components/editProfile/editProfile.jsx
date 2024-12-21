@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert } from 'antd';
 
 import { setEditProfile } from '../../redux/userInfo';
-import { useEditProfileMutation } from '../../redux/editProfile';
+import { useEditProfileMutation } from '../../redux/usersApi';
 
 import style from './editProfile.module.scss';
 

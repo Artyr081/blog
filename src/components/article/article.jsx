@@ -7,10 +7,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { setArticleInfo } from '../../redux/articleInfo';
-import { useEditArticleMutation } from '../../redux/editArticleApi';
-import { useGetAnArticleApiQuery } from '../../redux/articlesApi';
-import { useDeleteArticleMutation } from '../../redux/deleteArticleApi';
-import { useLikeArticleMutation, useDisliceArticleMutation } from '../../redux/favoriteArticleApi';
+import { useGetAnArticleApiQuery, useDeleteArticleMutation, 
+    useLikeArticleMutation, useDisliceArticleMutation, useEditArticleMutation } from '../../redux/articlesApi';
 import like from '../../rest/like.svg'
 import likeRed from '../../rest/like-red.svg';
 
@@ -24,10 +22,10 @@ export default function Article() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { slug } = useParams();
-    const { data, error, isLoading } = useGetAnArticleApiQuery(slug, {refetchOnMountOrArgChange: true});
+    const { data, error, isLoading } = useGetAnArticleApiQuery(slug);
     const [favorite, setFavorite] = useState(false);
     const [favoriteCount, setFavoritesCount] = useState(1)
-    const [ editArticle, { isSuccess: isRegistrationSuccess} ] = useEditArticleMutation();
+    const [ editArticle, { isSuccess: isRegistrationSucces} ] = useEditArticleMutation();
     const [ deleteArticle, { isSuccess: isRegistrationsuccess} ] = useDeleteArticleMutation();
     const [ disliceArticle] = useDisliceArticleMutation();
     const [ likeArticle] = useLikeArticleMutation();
@@ -40,7 +38,7 @@ export default function Article() {
         }
     }, [data]);
 
-    if (isRegistrationSuccess) {
+    if (isRegistrationSucces) {
         navigate(`/articles/${slug}/edit`);
     }
 
@@ -118,7 +116,8 @@ export default function Article() {
                 <img className={style.article__img} src={favorite ? likeRed : like}  alt='лайк'/>
                 <span>{favoriteCount}</span>
             </button>
-            {isAuth && isAuthName === data.article.author.username && <Popconfirm title='Hello world' 
+            {isAuth && isAuthName === data.article.author.username && <Popconfirm 
+                title='Are you sure to delete this article?' 
                 open={visible}
                 onConfirm={hundleDeleteArticle}
                 onCancel={() => setVisible(false)}>

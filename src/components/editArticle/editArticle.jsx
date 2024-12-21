@@ -5,7 +5,7 @@ import { Alert } from 'antd';
 import { useSelector } from 'react-redux';
 
 import { articleInfo } from '../../redux/selector';
-import { useCreateNewArticleMutation } from '../../redux/createArticleApi';
+import { useCreateNewArticleMutation } from '../../redux/articlesApi';
 
 import style from './editArticle.module.scss';
 
