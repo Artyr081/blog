@@ -34,6 +34,7 @@
       "react/sort-comp": "off",
       "react/destructuring-assignment": "off",
       "max-len": ["error", 120],
+      "spaced-comment": "off", // удалить потом
       "eslint-disable-next-line no-param-reassign": "off",
       "no-param-reassign": "off",
       "object-curly-newline": "off",

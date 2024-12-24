@@ -1,50 +1,53 @@
 import React, { useState, useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Alert } from 'antd';
-import { useSelector } from 'react-redux';
 
-import { articleInfo } from '../../redux/selector';
-import { useCreateNewArticleMutation } from '../../redux/articlesApi';
+import { useEditArticleMutation, useGetAnArticleApiQuery } from '../../redux/articlesApi';
 
 import style from './editArticle.module.scss';
 
 export default function EditArticle() {
+    const {slug} = useParams();
+    const { data } = useGetAnArticleApiQuery(slug);
+    const articleInfoData = data.article;
     const [errorApi, setErrorApi] = useState('');
     const [buttonDiasbled, setButtonDisabled] = useState(false)
     const navigate = useNavigate();
-    const article = useSelector(articleInfo);
     const [field, setField] = useState([]);
-    const [ createNewArticle] = useCreateNewArticleMutation();
+    const [ editArticle] = useEditArticleMutation();
     const {
         register,
         formState: { errors },
         handleSubmit
     } = useForm({
         defaultValues: {
-            title: article.title,
-            shortDescription: article.description,
-            text: article.body,
+            title: articleInfoData.title,
+            shortDescription: articleInfoData.description,
+            text: articleInfoData.body,
         }
     });
     
     useEffect(() => {
-        if(article && article.tagList) {
-            setField(article.tagList.map((tag, index) => ({ id: index + 1, tag })))
+        if(articleInfoData && articleInfoData.tagList) {
+            setField(articleInfoData.tagList.map((tag, index) => ({ id: index + 1, tag })))
         }
-    }, [article]);
+    }, [articleInfoData]);
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (datas) => {
         const tags = field.map(item => item.tag);
         try {
             setButtonDisabled(true)
-            const response = await createNewArticle({
-                title: data.title,
-                description: data.shortDescription,
-                body: data.text,
-                tagList: tags,
-            });
-            navigate(`/articles/${response.data.article.slug}`)
+            const articleData = {
+                article: {
+                    title: datas.title,
+                    description: datas.shortDescription,
+                    body: datas.text,
+                    tagList: tags,
+                }
+            };
+            const response = await editArticle({slug, articleData}).unwrap();
+            navigate(`/articles/${response.article.slug}`)
             setButtonDisabled(false)
         }catch(err) {
             setButtonDisabled(false)

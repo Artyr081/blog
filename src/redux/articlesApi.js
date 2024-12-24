@@ -21,7 +21,8 @@ const articlesApi = createApi({
             providesTags: ['Articles'],
         }),
         getAnArticleApi: builder.query({
-            query: (slug) => `/articles/${slug}`
+            query: (slug) => `/articles/${slug}`,
+            providesTags: ['Articles'],
         }),
         deleteArticle: builder.mutation({
             query: (slug) => ({
@@ -39,10 +40,10 @@ const articlesApi = createApi({
             invalidatesTags: ['Articles'],
         }),
         editArticle: builder.mutation({
-            query: ({ article, slug }) => ({
+            query: ({ slug, articleData }) => ({
                 url: `articles/${slug}`,
                 method: 'PUT',
-                body: { article },
+                body: articleData,
             }),
             invalidatesTags: ['Articles'],
         }),

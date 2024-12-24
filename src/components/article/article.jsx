@@ -4,11 +4,9 @@ import { Tag, Spin, Alert, Avatar, Popconfirm } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { format } from 'date-fns';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { setArticleInfo } from '../../redux/articleInfo';
 import { useGetAnArticleApiQuery, useDeleteArticleMutation, 
-    useLikeArticleMutation, useDisliceArticleMutation, useEditArticleMutation } from '../../redux/articlesApi';
+    useLikeArticleMutation, useDisliceArticleMutation} from '../../redux/articlesApi';
 import like from '../../rest/like.svg'
 import likeRed from '../../rest/like-red.svg';
 
@@ -19,13 +17,11 @@ export default function Article() {
     const [errorApi, setErrorApi] = useState('');
     const [buttonDiasbled, setButtonDisabled] = useState(false)
     const [visible, setVisible] = useState(false);
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { slug } = useParams();
     const { data, error, isLoading } = useGetAnArticleApiQuery(slug);
     const [favorite, setFavorite] = useState(false);
     const [favoriteCount, setFavoritesCount] = useState(1)
-    const [ editArticle, { isSuccess: isRegistrationSucces} ] = useEditArticleMutation();
     const [ deleteArticle, { isSuccess: isRegistrationsuccess} ] = useDeleteArticleMutation();
     const [ disliceArticle] = useDisliceArticleMutation();
     const [ likeArticle] = useLikeArticleMutation();
@@ -41,28 +37,14 @@ export default function Article() {
         }
     }, [data, isAuth, slug]);
 
-    if (isRegistrationSucces) {
-        navigate(`/articles/${slug}/edit`);
-    }
-
     if (isRegistrationsuccess) {
         navigate('/')
     }
 
     const hundleEditArticle = async () => {
         try{
-            const {title, description, body} = data.article;
-            const obj = {
-                article: {
-                    title,
-                    description,
-                    body
-                },
-                slug
-            }
             setButtonDisabled(true)
-            const result = await editArticle(obj).then((res) => res.data)
-            dispatch(setArticleInfo(result))
+            navigate(`/articles/${slug}/edit`)
             setButtonDisabled(false)
         }catch(err) {
             setErrorApi('Произошла ошибка, попробуйте позже')
