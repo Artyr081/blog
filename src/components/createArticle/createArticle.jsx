@@ -60,19 +60,34 @@ export default function CreateArticle() {
                 <label className={style.label}>
                     Title
                     <input className={style.input} placeholder="Title" 
-                        {...register('title', { required: 'Поле обязательно к заполнению' })} />
+                        {...register('title', { required: 'Поле обязательно к заполнению',
+                            minLength: {
+                                value: 3,
+                                message: 'минимум 3 символов'
+                            },
+                        })} />
                     {errors.title && <p className={style.error}>{errors.title.message}</p>}
                 </label>
                 <label className={style.label}>
                     Short description
                     <input className={style.input} placeholder="Short Description" 
-                        {...register('shortDescription', { required: 'Поле обязательно к заполнению' })} />
+                        {...register('shortDescription', { required: 'Поле обязательно к заполнению',
+                            minLength: {
+                                value: 3,
+                                message: 'минимум 3 символов'
+                            },
+                        })} />
                     {errors.shortDescription && <p className={style.error}>{errors.shortDescription.message}</p>}
                 </label>
                 <label className={style.label}>
                     Text
                     <textarea className={style.input__text} placeholder="Text" 
-                        {...register('text', { required: 'Поле обязательно к заполнению' })} />
+                        {...register('text', { required: 'Поле обязательно к заполнению',
+                            minLength: {
+                                value: 3,
+                                message: 'минимум 3 символов'
+                            },
+                        })} />
                     {errors.text && <p className={style.error}>{errors.text.message}</p>}
                 </label>
                 <label className={style.label}>
